@@ -5,7 +5,7 @@ import sys
 import os
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from RubiksCube2x2x2 import Cube, astar, ALL_MOVES
+from Rubik import Cube, astar, ALL_MOVES
 
 # ─── Page Config ────────────────────────────────────────────────────────────
 st.set_page_config(
