@@ -15,3 +15,24 @@ pip install streamlit
 Run the Web App:
 
 streamlit run app.py
+
+
+💻 Usage
+Web Interface
+Scramble: Use the "Scramble" slider and button to create a random puzzle.
+
+Solve: Click "Solve with A*" to initiate the search.
+
+Playback: Use the navigation buttons (Next, Prev, Auto-Play) to visualize the solution step-by-step.
+
+Command Line Interface
+You can interact with the core logic directly:
+
+Print the cube: python RubiksCube2x2x2.py print <STATE>
+
+Apply a move: python RubiksCube2x2x2.py move U <STATE>
+
+Solve a state: python RubiksCube2x2x2.py solve <STATE>
+
+State Format: A string of 24 characters representing the faces in order: White (U), Red (R), Green (G), Yellow (D), Orange (L), Blue (B).
+Default: WWWWRRRRGGGGYYYYOOOOBBBB
