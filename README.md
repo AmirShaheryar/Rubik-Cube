@@ -8,8 +8,10 @@
 
 
 Install dependencies:
+
 pip install streamlit
 
 
 Run the Web App:
+
 streamlit run app.py
