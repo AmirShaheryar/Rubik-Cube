@@ -46,4 +46,53 @@ for _move in list(MOVES.keys()):
     MOVES[_move + "'"] = _inverse(MOVES[_move])
 
 ALL_MOVES = list(MOVES.keys())
-  
+
+
+
+class Cube:
+    def __init__(self, state=None):
+        if state is None:
+            state = DEFAULT_STATE
+        # Accept space-separated format: "WWWW RRRR GGGG YYYY OOOO BBBB"
+        self.state = tuple(state.replace(" ", ""))
+        assert len(self.state) == 24, "State must have exactly 24 tiles."
+
+    def display(self):
+        s = self.state
+        lines = []
+        lines.append("   " + s[0] + s[1])
+        lines.append("   " + s[2] + s[3])
+        lines.append(s[16] + s[17] + s[8] + s[9] + s[4] + s[5] + s[20] + s[21])
+        lines.append(s[18] + s[19] + s[10] + s[11] + s[6] + s[7] + s[22] + s[23])
+        lines.append("   " + s[12] + s[13])
+        lines.append("   " + s[14] + s[15])
+        return "\n".join(lines)
+
+    def is_goal(self):
+        s = self.state
+        faces = [s[0:4], s[4:8], s[8:12], s[12:16], s[16:20], s[20:24]]
+        return all(len(set(f)) == 1 for f in faces)
+
+    def apply_move(self, move):
+        perm = MOVES[move]
+        new_state = tuple(self.state[perm[i]] for i in range(24))
+        return Cube.__from_tuple(new_state)
+
+    def successors(self):
+        return [(move, self.apply_move(move)) for move in ALL_MOVES]
+
+    @staticmethod
+    def __from_tuple(t):
+        c = Cube.__new__(Cube)
+        c.state = t
+        return c
+
+    def __eq__(self, other):
+        return self.state == other.state
+
+    def __hash__(self):
+        return hash(self.state)
+
+    def __repr__(self):
+        return "".join(self.state)
+
