@@ -96,3 +96,21 @@ class Cube:
     def __repr__(self):
         return "".join(self.state)
 
+FACE_INDICES = [
+    (0, 1, 2, 3),       # U / White
+    (4, 5, 6, 7),       # R / Red
+    (8, 9, 10, 11),     # G / Green
+    (12, 13, 14, 15),   # D / Yellow
+    (16, 17, 18, 19),   # L / Orange
+    (20, 21, 22, 23),   # B / Blue
+]
+
+def heuristic(cube):
+    s = cube.state
+    h = 0
+    for face in FACE_INDICES:
+        colours = [s[i] for i in face]
+        most_common = max(set(colours), key=colours.count)
+        wrong = sum(1 for c in colours if c != most_common)
+        h = max(h, wrong)
+    return (h + 1) // 2   
