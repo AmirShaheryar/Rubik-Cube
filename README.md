@@ -40,3 +40,10 @@ Default: WWWWRRRRGGGGYYYYOOOOBBBB
 
 Performance
 The A* algorithm typically finds solutions for scrambles of 1-8 moves almost instantly. For deeper scrambles, the "Nodes Generated" and "Nodes Expanded" metrics in the UI provide insight into the search complexity.
+
+
+Author
+
+Shaheryar Amir
+
+Roll Number: 23L-0828
