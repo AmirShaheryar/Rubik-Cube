@@ -114,3 +114,39 @@ def heuristic(cube):
         wrong = sum(1 for c in colours if c != most_common)
         h = max(h, wrong)
     return (h + 1) // 2   
+def astar(start_cube):
+    start_time = time.time()
+
+    counter = 0
+    start_h = heuristic(start_cube)
+    open_list = [(start_h, 0, counter, start_cube, [])]
+    heapq.heapify(open_list)
+
+    closed = {}          
+    nodes_generated = 1
+    nodes_expanded = 0
+
+    while open_list:
+        f, g, _, cube, path = heapq.heappop(open_list)
+
+        if cube.state in closed and closed[cube.state] <= g:
+            continue
+        closed[cube.state] = g
+
+        nodes_expanded += 1
+
+        if cube.is_goal():
+            elapsed = time.time() - start_time
+            return path, nodes_generated, nodes_expanded, elapsed
+
+        for move, child in cube.successors():
+            new_g = g + 1
+            if child.state in closed and closed[child.state] <= new_g:
+                continue
+            new_h = heuristic(child)
+            new_f = new_g + new_h
+            counter += 1
+            nodes_generated += 1
+            heapq.heappush(open_list, (new_f, new_g, counter, child, path + [move]))
+
+    return None, nodes_generated, nodes_expanded, time.time() - start_time
