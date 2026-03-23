@@ -36,3 +36,7 @@ Solve a state: python RubiksCube2x2x2.py solve <STATE>
 
 State Format: A string of 24 characters representing the faces in order: White (U), Red (R), Green (G), Yellow (D), Orange (L), Blue (B).
 Default: WWWWRRRRGGGGYYYYOOOOBBBB
+
+
+Performance
+The A* algorithm typically finds solutions for scrambles of 1-8 moves almost instantly. For deeper scrambles, the "Nodes Generated" and "Nodes Expanded" metrics in the UI provide insight into the search complexity.
