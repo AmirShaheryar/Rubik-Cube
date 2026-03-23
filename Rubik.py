@@ -150,3 +150,84 @@ def astar(start_cube):
             heapq.heappush(open_list, (new_f, new_g, counter, child, path + [move]))
 
     return None, nodes_generated, nodes_expanded, time.time() - start_time
+def parse_state(args, idx=1):
+    """Return (state_string | None, next_arg_index)."""
+    if idx < len(args):
+        candidate = args[idx].replace(" ", "")
+        if len(candidate) == 24 and candidate.isalpha():
+            return candidate, idx + 1
+    return None, idx
+
+
+def main():
+    args = sys.argv[1:]
+
+    if not args:
+        print("Usage: python RubiksCube2x2x2.py <command> [state]")
+        print("Commands: print | goal | move <MOVE> | solve")
+        print("Example : python RubiksCube2x2x2.py solve WWWWRRRRGGGGYYYYOOOOBBBB")
+        return
+
+    command = args[0].lower()
+
+    if command == "print":
+        raw, _ = parse_state(args, 1)
+        cube = Cube(raw)
+        print(cube.display())
+
+    elif command == "goal":
+        raw, _ = parse_state(args, 1)
+        cube = Cube(raw)
+        print(cube.is_goal())
+
+    elif command == "move":
+        if len(args) < 2:
+            print("Please specify a move, e.g.: move U")
+            return
+        move_name = args[1]
+        if move_name not in MOVES:
+            print(f"Unknown move '{move_name}'. Valid moves: {', '.join(ALL_MOVES)}")
+            return
+        raw, _ = parse_state(args, 2)
+        cube = Cube(raw)
+        result = cube.apply_move(move_name)
+        print(f"After move {move_name}:")
+        print(result.display())
+
+    elif command == "solve":
+        raw, _ = parse_state(args, 1)
+        cube = Cube(raw)
+
+        print("Initial state:")
+        print(cube.display())
+        print()
+
+        if cube.is_goal():
+            print("Already solved!")
+            return
+
+        print("Running A* Search...")
+        solution, gen, exp, elapsed = astar(cube)
+
+        if solution is None:
+            print("No solution found.")
+        else:
+            print(f"Solution found in {len(solution)} move(s)!\n")
+            current = cube
+            for i, move in enumerate(solution):
+                current = current.apply_move(move)
+                print(f"Move {i+1}: {move}")
+                print(current.display())
+                print()
+
+            print(f"Moves sequence : {' -> '.join(solution)}")
+            print(f"Nodes generated: {gen}")
+            print(f"Nodes expanded : {exp}")
+            print(f"Time taken     : {elapsed:.4f} seconds")
+
+    else:
+        print(f"Unknown command '{command}'. Use: print | goal | move | solve")
+
+
+if __name__ == "__main__":
+    main()
